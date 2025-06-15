@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球音乐导航 - 世界音乐探索之旅</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '🎵';
+            font-size: 1.5rem;
+        }
+
+        .subsection {
+            margin-bottom: 25px;
+        }
+
+        .subsection h3 {
+            font-size: 1.3rem;
+            color: #34495e;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .link-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .link-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+
+        .link-card a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            margin-bottom: 8px;
+            transition: color 0.3s ease;
+        }
+
+        .link-card a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .link-card .description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        .region-tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 全球音乐导航站</h1>
+            <p>为真正的世界公民和音乐探索家准备的音乐之旅指南</p>
+        </div>
+
+        <div class="search-box">
+            <input type="text" class="search-input" placeholder="搜索音乐平台或服务..." id="searchInput">
+        </div>
+
+        <!-- 音乐流媒体与发现 -->
+        <div class="section" data-category="streaming">
+            <h2 class="section-title">音乐流媒体与发现</h2>
+            
+            <div class="subsection">
+                <h3>全球巨头</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>Spotify <span class="region-tag">瑞典/全球</span></h4>
+                        <a href="https://www.spotify.com" target="_blank">www.spotify.com</a>
+                        <div class="description">全球流媒体的定义者。其数据驱动的推荐系统和全球榜单是现代音乐产业的晴雨表。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Apple Music <span class="region-tag">美国/全球</span></h4>
+                        <a href="https://music.apple.com" target="_blank">music.apple.com</a>
+                        <div class="description">高品质音频（无损、空间音频）的倡导者，与苹果生态无缝衔接，在全球拥有大量忠实用户。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>YouTube Music <span class="region-tag">美国/全球</span></h4>
+                        <a href="https://music.youtube.com" target="_blank">music.youtube.com</a>
+                        <div class="description">拥有最庞大的"非官方"曲库（现场、翻唱、Remix），是视觉化音乐消费和长尾内容发现的王者。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Deezer <span class="region-tag">法国/全球</span></h4>
+                        <a href="https://www.deezer.com" target="_blank">www.deezer.com</a>
+                        <div class="description">在欧洲和拉美市场极具影响力的法国流媒体服务，以其 "Flow" 个性化推荐和 Hi-Fi 音频服务著称。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>独立与高保真之选</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>Bandcamp <span class="region-tag">美国/全球</span></h4>
+                        <a href="https://bandcamp.com" target="_blank">bandcamp.com</a>
+                        <div class="description">全球独立音乐人的数字家园和核心商业平台。直接支持艺术家，是发现前沿、小众音乐的最佳渠道。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>SoundCloud <span class="region-tag">德国/全球</span></h4>
+                        <a href="https://soundcloud.com" target="_blank">soundcloud.com</a>
+                        <div class="description">新锐音乐人和电子制作人的"草稿本"和社交平台，无数潮流从这里诞生。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Tidal <span class="region-tag">挪威/全球</span></h4>
+                        <a href="https://tidal.com" target="_blank">tidal.com</a>
+                        <div class="description">专为音响发烧友和追求极致音质的听众打造，提供大师级质量的音频流。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Qobuz <span class="region-tag">法国/全球</span></h4>
+                        <a href="https://www.qobuz.com" target="_blank">www.qobuz.com</a>
+                        <div class="description">另一个专注于高解析度音频的流媒体和下载平台，深受古典乐和爵士乐迷的喜爱。</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>亚洲市场</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>QQ音乐 <span class="region-tag">中国</span></h4>
+                        <a href="https://y.qq.com" target="_blank">y.qq.com</a>
+                        <div class="description">中国腾讯音乐娱乐集团(TME)的旗舰产品，拥有最广泛的独家版权库和庞大的用户基础。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>网易云音乐 <span class="region-tag">中国</span></h4>
+                        <a href="https://music.163.com" target="_blank">music.163.com</a>
+                        <div class="description">以其独特的社区文化、用户评论和精准的算法推荐在中国市场独树一帜。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>酷狗音乐 <span class="region-tag">中国</span></h4>
+                        <a href="https://www.kugou.com" target="_blank">www.kugou.com</a>
+                        <div class="description">同属TME旗下，深耕下沉市场，用户基数巨大。其直播和K歌功能非常受欢迎。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Melon <span class="region-tag">韩国</span></h4>
+                        <a href="https://www.melon.com" target="_blank">www.melon.com</a>
+                        <div class="description">韩国最具统治力的音乐平台，其"Melon Top 100"榜单是K-Pop行业衡量成功的终极标准。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>KKBOX <span class="region-tag">台湾/亚洲</span></h4>
+                        <a href="https://www.kkbox.com" target="_blank">www.kkbox.com</a>
+                        <div class="description">华语音乐圈的重要流媒体服务，在台湾、香港及东南亚市场拥有深厚根基。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>JioSaavn <span class="region-tag">印度</span></h4>
+                        <a href="https://www.jiosaavn.com" target="_blank">www.jiosaavn.com</a>
+                        <div class="description">印度领先的流媒体服务，提供海量的宝莱坞金曲和南亚各地方语言音乐。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 音乐新闻、评论与文化 -->
+        <div class="section" data-category="news">
+            <h2 class="section-title">音乐新闻、评论与文化</h2>
+            
+            <div class="subsection">
+                <h3>英语世界权威</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>Pitchfork <span class="region-tag">美国</span></h4>
+                        <a href="https://pitchfork.com" target="_blank">pitchfork.com</a>
+                        <div class="description">独立音乐评论标杆</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Billboard <span class="region-tag">美国</span></h4>
+                        <a href="https://www.billboard.com" target="_blank">www.billboard.com</a>
+                        <div class="description">产业商业数据权威</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Rolling Stone <span class="region-tag">美国</span></h4>
+                        <a href="https://www.rollingstone.com" target="_blank">www.rollingstone.com</a>
+                        <div class="description">流行文化深度报道</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>NME <span class="region-tag">英国</span></h4>
+                        <a href="https://www.nme.com" target="_blank">www.nme.com</a>
+                        <div class="description">英国老牌音乐媒体，报道迅速</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>The FADER <span class="region-tag">美国</span></h4>
+                        <a href="https://www.thefader.com" target="_blank">www.thefader.com</a>
+                        <div class="description">潮流音乐与文化的风向标，视觉风格独特</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Resident Advisor <span class="region-tag">全球/英国</span></h4>
+                        <a href="https://ra.co" target="_blank">ra.co</a>
+                        <div class="description">全球电子音乐与俱乐部文化圣经</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>The Quietus <span class="region-tag">英国</span></h4>
+                        <a href="https://thequietus.com" target="_blank">thequietus.com</a>
+                        <div class="description">前卫、实验、深度乐评的智识高地</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>欧洲大陆之声</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>Laut.de <span class="region-tag">德国</span></h4>
+                        <a href="https://www.laut.de" target="_blank">www.laut.de</a>
+                        <div class="description">德国主流在线音乐杂志</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Les Inrockuptibles <span class="region-tag">法国</span></h4>
+                        <a href="https://www.lesinrocks.com" target="_blank">www.lesinrocks.com</a>
+                        <div class="description">法国重要文化与音乐评论媒体</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Rockol <span class="region-tag">意大利</span></h4>
+                        <a href="https://www.rockol.it" target="_blank">www.rockol.it</a>
+                        <div class="description">意大利最主要的音乐新闻网站之一</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>亚洲视角</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>音乐财经 <span class="region-tag">中国</span></h4>
+                        <a href="https://www.chinambn.com" target="_blank">www.chinambn.com</a>
+                        <div class="description">深度聚焦中国音乐产业的商业媒体，提供行业分析、数据报告和深度访谈。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>街声 StreetVoice <span class="region-tag">台湾/中国大陆</span></h4>
+                        <a href="https://streetvoice.com" target="_blank">streetvoice.com</a>
+                        <div class="description">华人世界最重要的独立音乐创作人平台之一，不仅是作品发布地，也拥有高质量的原创音乐内容。</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Natalie <span class="region-tag">日本</span></h4>
+                        <a href="https://natalie.mu/music" target="_blank">natalie.mu/music</a>
+                        <div class="description">日本最快最全的音乐新闻速递</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Bandwagon <span class="region-tag">新加坡</span></h4>
+                        <a href="https://www.bandwagon.asia" target="_blank">www.bandwagon.asia</a>
+                        <div class="description">聚焦东南亚音乐场景</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h3>拉美与世界其他地区</h3>
+                <div class="links-grid">
+                    <div class="link-card">
+                        <h4>Remezcla <span class="region-tag">美国/拉美</span></h4>
+                        <a href="https://remezcla.com" target="_blank">remezcla.com</a>
+                        <div class="description">聚焦拉丁青年文化的权威媒体，音乐是其核心内容</div>
+                    </div>
+                    <div class="link-card">
+                        <h4>Pan-African Music <span class="region-tag">全球/非洲</span></h4>
+                        <a href="https://pan-african-music.com/en/" target="_blank">pan-african-music.com</a>
+                        <div class="description">致力于推广非洲及非裔散居地区当代音乐的优秀平台</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据库、社区与知识库 -->
+        <div class="section" data-category="database">
+            <h2 class="section-title">数据库、社区与知识库</h2>
+            <div class="links-grid">
+                <div class="link-card">
+                    <h4>Discogs</h4>
+                    <a href="https://www.discogs.com" target="_blank">www.discogs.com</a>
+                    <div class="description">实体唱片数据库与交易市场</div>
+                </div>
+                <div class="link-card">
+                    <h4>Rate Your Music (RYM)</h4>
+                    <a href="https://rateyourmusic.com" target="_blank">rateyourmusic.com</a>
+                    <div class="description">用户驱动的音乐评分与分类社区</div>
+                </div>
+                <div class="link-card">
+                    <h4>AllMusic</h4>
+                    <a href="https://www.allmusic.com" target="_blank">www.allmusic.com</a>
+                    <div class="description">全面的音乐元数据百科</div>
+                </div>
+                <div class="link-card">
+                    <h4>Genius</h4>
+                    <a href="https://genius.com" target="_blank">genius.com</a>
+                    <div class="description">歌词注释与音乐知识社区</div>
+                </div>
+                <div class="link-card">
+                    <h4>WhoSampled</h4>
+                    <a href="https://www.whosampled.com" target="_blank">www.whosampled.com</a>
+                    <div class="description">采样、翻唱与Remix关系数据库</div>
+                </div>
+                <div class="link-card">
+                    <h4>Setlist.fm</h4>
+                    <a href="https://www.setlist.fm" target="_blank">www.setlist.fm</a>
+                    <div class="description">演唱会曲目单数据库</div>
+                </div>
+                <div class="link-card">
+                    <h4>MusicBrainz</h4>
+                    <a href="https://musicbrainz.org" target="_blank">musicbrainz.org</a>
+                    <div class="description">开放的、结构化的音乐元数据百科全书</div>
+                </div>
+                <div class="link-card">
+                    <h4>豆瓣音乐 <span class="region-tag">中国</span></h4>
+                    <a href="https://music.douban.com" target="_blank">music.douban.com</a>
+                    <div class="description">中国最具影响力的文艺社区之一，其音乐板块聚集了大量资深乐迷</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 现场音乐与票务 -->
+        <div class="section" data-category="live">
+            <h2 class="section-title">现场音乐与票务</h2>
+            <div class="links-grid">
+                <div class="link-card">
+                    <h4>Ticketmaster <span class="region-tag">全球</span></h4>
+                    <a href="https://www.ticketmaster.com" target="_blank">www.ticketmaster.com</a>
+                    <div class="description">全球最大的票务巨头</div>
+                </div>
+                <div class="link-card">
+                    <h4>Live Nation <span class="region-tag">全球</span></h4>
+                    <a href="https://www.livenation.com" target="_blank">www.livenation.com</a>
+                    <div class="description">全球最大的现场娱乐推广公司</div>
+                </div>
+                <div class="link-card">
+                    <h4>Songkick <span class="region-tag">全球</span></h4>
+                    <a href="https://www.songkick.com" target="_blank">www.songkick.com</a>
+                    <div class="description">智能追踪你喜爱艺人的巡演信息</div>
+                </div>
+                <div class="link-card">
+                    <h4>Bandsintown <span class="region-tag">全球</span></h4>
+                    <a href="https://www.bandsintown.com" target="_blank">www.bandsintown.com</a>
+                    <div class="description">另一个广受欢迎的演出信息发现和提醒平台</div>
+                </div>
+                <div class="link-card">
+                    <h4>大麦网 <span class="region-tag">中国</span></h4>
+                    <a href="https://www.damai.cn" target="_blank">www.damai.cn</a>
+                    <div class="description">中国最大的现场娱乐票务平台，涵盖演唱会、音乐节、话剧等</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎵 探索世界音乐，从这里开始您的音乐之旅 🎵</p>
+        </div>
+    </div>
+
+    <script>
+        // 搜索功能
+        const searchInput = document.getElementById('searchInput');
+        const linkCards = document.querySelectorAll('.link-card');
+        const sections = document.querySelectorAll('.section');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            if (searchTerm === '') {
+                // 显示所有内容
+                linkCards.forEach(card => {
+                    card.style.display = 'block';
+                });
+                sections.forEach(section => {
+                    section.style.display = 'block';
+                });
+                return;
+            }
+
+            let hasVisibleCards = {};
+            
+            linkCards.forEach(card => {
+                const title = card.querySelector('h4').textContent.toLowerCase();
+                const link = card.querySelector('a').textContent.toLowerCase();
+                const description = card.querySelector('.description').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || link.includes(searchTerm) || description.includes(searchTerm)) {
+                    card.style.display = 'block';
+                    // 标记该卡片所在的section应该显示
+                    const section = card.closest('.section');
+                    hasVisibleCards[section.dataset.category || 'default'] = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 显示/隐藏sections
+            sections.forEach(section => {
+                const category = section.dataset.category || 'default';
+                if (hasVisibleCards[category]) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        });
+
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // 添加加载动画效果
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.link-card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                }, index * 50);
+            });
+        });
+
+        // 响应式菜单切换
+        function toggleMobileMenu() {
+            const nav = document.querySelector('.nav-menu');
+            nav.classList.toggle('active');
+        }
+
+        // 添加页面滚动时的视差效果
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const header = document.querySelector('.header');
+            if (header) {
+                header.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // 为链接卡片添加点击统计（可选）
+        linkCards.forEach(card => {
+            const link = card.querySelector('a');
+            if (link) {
+                link.addEventListener('click', function() {
+                    // 这里可以添加点击统计逻辑
+                    console.log('访问:', this.href);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
